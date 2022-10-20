@@ -1,3 +1,6 @@
+/* Create Table named __ with Column(S)
+named __ & desingated DataType */
+
 CREATE TABLE EmployeeDemographics
 (EmployeeID int,
 FirstName varchar(50),
@@ -11,6 +14,8 @@ CREATE TABLE EmployeeSalary
 JobTittle varchar(50),
 Salary int
 )
+
+/* Insert values into each column row by row */
 
 INSERT INTO EmployeeDemographics VALUES 
 (1001, 'Jim', 'Halpert', 30, 'Male')
