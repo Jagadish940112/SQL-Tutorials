@@ -1,0 +1,46 @@
+/*
+SELECT Statement
+*, Top, Distinct, Count, AS, Max, Min, Avg
+*/
+
+SELECT * -- select everything/columns & rows
+FROM EmployeeDemographics
+
+SELECT FirstName -- select FirstName column only
+FROM EmployeeDemographics
+
+SELECT FirstName, LastName -- select FirstName & LastName columns only
+FROM EmployeeDemographics
+
+SELECT TOP 5 * -- select top 5 rows of every columns
+FROM EmployeeDemographics
+
+SELECT DISTINCT(EmployeeID) -- select unique EmployeeID only
+FROM EmployeeDemographics
+
+SELECT DISTINCT(Gender) -- select unique Gender only
+FROM EmployeeDemographics
+
+SELECT COUNT(LastName) -- return the number of row NON-NULL values in a column
+FROM EmployeeDemographics
+
+SELECT COUNT(LastName) AS LastNameCount -- AS is used to name column
+FROM EmployeeDemographics
+
+SELECT MAX(Salary) -- return max values in a column
+FROM EmployeeSalary
+
+SELECT MIN(Salary) -- return min values in a column
+FROM EmployeeSalary
+
+SELECT AVG(Salary) -- return avg values in a column
+FROM EmployeeSalary
+
+/*
+FROM Statement
+If change database to master, need to specify whole path
+Database.dbo.Table
+*/
+
+SELECT *
+FROM [SQL Tutorial].dbo.EmployeeSalary -- Database.dbo.Table
