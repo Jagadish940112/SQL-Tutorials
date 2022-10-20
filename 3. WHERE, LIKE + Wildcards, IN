@@ -1,0 +1,32 @@
+/*
+WHERE statement acts a filter
+=, <>, <, >, AND, OR, LIKE, NULL, NOT NULL, IN
+*/
+
+SELECT *
+FROM EmployeeDemographics
+WHERE FirstName = 'Jim' -- equal to
+
+SELECT *
+FROM EmployeeDemographics
+WHERE FirstName <> 'Jim' -- does not equal to
+
+SELECT *
+FROM EmployeeDemographics
+WHERE Age > 30 -- greater than, >= greater than equal to
+
+SELECT *
+FROM EmployeeDemographics
+WHERE Age <= 32 AND Gender = 'Male' -- AND combined multiple conditions, OR either one
+
+SELECT *
+FROM EmployeeDemographics
+WHERE LastName LIKE 'S%' -- where LastName starts with a S, refer LIKE & Wildcards for more
+
+SELECT *
+FROM EmployeeDemographics
+WHERE FirstName is NULL -- FirstName is empty/no values
+
+SELECT *
+FROM EmployeeDemographics
+WHERE FirstName IN ('Jim','Michael') -- IN behave like multiple equal statements
