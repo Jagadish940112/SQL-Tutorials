@@ -1,0 +1,27 @@
+-- Add a few more rows before starting this practice
+
+INSERT INTO EmployeeDemographics VALUES
+(1011, 'Ryan', 'Howard', 26, 'Male'),
+(NULL, 'Holly','Flax', NULL, NULL),
+(1013, 'Darryl', 'Philbin', NULL, 'Male')
+
+INSERT INTO EmployeeSalary VALUES
+(1010, NULL, 47000),
+(NULL, 'Salesman', 43000)
+
+/*
+INNER JOIN, FULL/LEFT/RIGHT OUTER JOIN
+Combined multiple tables into a single output based on similar column(s), unique field
+*/
+
+-- Use EmployeeID column to JOIN tables
+
+SELECT *
+FROM EmployeeDemographics
+INNER JOIN EmployeeSalary -- default JOIN is INNER, specify FULL OUTER, LEFT/RIGHT OUTER
+	ON EmployeeDemographics.EmployeeID = EmployeeSalary.EmployeeID -- similar column, unique field
+
+SELECT EmployeeDemographics.EmployeeID, FirstName, LastName, JobTittle, Salary -- EmployeeID exists in 2 tables, specify which table
+FROM EmployeeDemographics
+INNER JOIN EmployeeSalary
+	ON EmployeeDemographics.EmployeeID = EmployeeSalary.EmployeeID
