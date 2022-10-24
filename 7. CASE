@@ -1,0 +1,15 @@
+/*
+CASE Statement
+Goes through conditions and returns a value when the FIRST condition is met
+Like an if-then-else statement
+*/
+
+SELECT FirstName, LastName, Age, -- need "," before CASE statement
+CASE
+	WHEN Age > 30 THEN 'Old' -- ORDER of condition(s) is crucial as it will return the value of the FIRST condition is met
+	WHEN Age BETWEEN 27 AND 30 THEN 'Young'
+	ELSE 'Fresher'
+END AS Seniority -- new column name
+FROM EmployeeDemographics
+WHERE Age is NOT NULL
+ORDER BY Age
