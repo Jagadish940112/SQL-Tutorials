@@ -1,0 +1,19 @@
+/*
+HAVING Clause
+WHERE cant be used with aggregate functions, use HAVING
+*/
+
+SELECT JobTittle, COUNT(JobTittle) AS COUNT
+FROM EmployeeDemographics
+JOIN EmployeeSalary
+	ON EmployeeDemographics.EmployeeID = EmployeeSalary.EmployeeID
+GROUP BY JobTittle
+HAVING COUNT(JobTittle) > 1 -- after GROUP BY not before, cant use column name
+
+SELECT JobTittle, AVG(Salary) AS Average
+FROM EmployeeDemographics
+JOIN EmployeeSalary
+	ON EmployeeDemographics.EmployeeID = EmployeeSalary.EmployeeID
+GROUP BY JobTittle
+HAVING AVG(Salary) > 45000 -- after GROUP BY not before, cant use column name
+ORDER By Average
