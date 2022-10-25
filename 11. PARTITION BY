@@ -1,0 +1,14 @@
+/*
+PARTITION BY
+We get a limited number of records using the GROUP BY clause.
+We get all records in a table using the PARTITION BY clause.
+*/
+
+--INSERT INTO EmployeeDemographics VALUES
+--(1005, 'Toby', 'Flenderson', 32, 'Male')
+
+SELECT FirstName, LastName, Salary, Gender,
+COUNT(Gender) OVER (PARTITION BY Gender) AS TotalGender
+FROM EmployeeDemographics AS Demo
+JOIN EmployeeSalary AS Sal
+	ON Demo.EmployeeID = Sal.EmployeeID
