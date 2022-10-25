@@ -1,0 +1,19 @@
+/*
+UPDATE & DELETE Data/Row
+*/
+
+SELECT *
+FROM EmployeeDemographics
+
+UPDATE EmployeeDemographics
+SET EmployeeID = 1012, Age = 31, Gender = 'Female'
+WHERE FirstName = 'Holly' AND LastName = 'Flax'
+
+-- Check first which row to be deleted before perform
+
+SELECT *
+FROM EmployeeDemographics
+WHERE EmployeeID = 1005
+
+DELETE FROM EmployeeDemographics
+WHERE EmployeeID = 1005
