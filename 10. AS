@@ -1,0 +1,28 @@
+/*
+AS Aliasing
+--Temporarily changing column/table name
+*/
+
+-- Changing Column name
+
+SELECT FirstName + ' ' + LastName AS FullName
+FROM EmployeeDemographics
+
+SELECT AVG(Age) AS AvgAge
+FROM EmployeeDemographics
+
+-- Changing Table name
+
+SELECT Demo.EmployeeID, Sal.Salary
+FROM EmployeeDemographics AS Demo
+JOIN EmployeeSalary AS Sal
+	ON Demo.EmployeeID = Sal.EmployeeID
+
+SELECT Demo.EmployeeID, Demo.FirstName, Demo.LastName,
+	   Sal.JobTittle, Ware.Age
+FROM EmployeeDemographics AS Demo
+LEFT JOIN EmployeeSalary AS Sal
+	ON Demo.EmployeeID = Sal.EmployeeID
+LEFT JOIN WareHouseEmployeeDemographics AS Ware
+	ON Demo.EmployeeID = Ware.EmployeeID
+ 
