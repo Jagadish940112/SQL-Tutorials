@@ -1,0 +1,47 @@
+/*
+Temp Table
+*/
+
+CREATE TABLE #temp_Employee (
+EmployeeID int,
+JobTittle varchar(100),
+Salary int
+)
+
+SELECT *
+FROM #temp_Employee
+
+INSERT INTO #temp_Employee VALUES (
+1001, 'HR', 45000 )
+
+SELECT *
+FROM #temp_Employee
+
+-- Import data from another table to temp table
+
+INSERT INTO #temp_Employee
+SELECT *
+FROM EmployeeSalary
+
+SELECT *
+FROM #temp_Employee
+
+DROP TABLE IF EXISTS #temp_Employee2
+CREATE TABLE #temp_Employee2 (
+JobTitle varchar(50),
+EmployeesPerJob int,
+AvgAge int,
+AvgSalary int)
+
+SELECT *
+FROM #temp_Employee2
+
+INSERT INTO #temp_Employee2
+SELECT JobTittle, COUNT(JobTittle), AVG(Age), AVG(Salary)
+FROM EmployeeDemographics AS Demo
+JOIN EmployeeSalary AS Sal
+	ON Demo.EmployeeID = Sal.EmployeeID
+GROUP BY JobTittle
+
+SELECT *
+FROM #Temp_Employee2
