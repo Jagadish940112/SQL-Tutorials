@@ -1,0 +1,40 @@
+/*
+Stored Procedure
+A prepared SQL code that you can save, so the code can be reused over and over again.
+*/
+
+CREATE PROCEDURE Test
+AS
+SELECT *
+FROM EmployeeDemographics
+
+EXEC Test
+
+CREATE PROCEDURE Temp_Employee
+AS
+CREATE TABLE #temp_Employee (
+JobTitle varchar(50),
+EmployeesPerJob int,
+AvgAge int,
+AvgSalary int)
+
+INSERT INTO #temp_Employee
+SELECT JobTittle, COUNT(JobTittle), AVG(Age), AVG(Salary)
+FROM EmployeeDemographics AS Demo
+JOIN EmployeeSalary AS Sal
+	ON Demo.EmployeeID = Sal.EmployeeID
+GROUP BY JobTittle
+
+SELECT *
+From #temp_Employee
+
+EXEC Temp_Employee
+
+You can also pass parameters to a stored procedure, so that the stored procedure can act based on the parameter value(s) that is passed.
+
+ALTER PROCEDURE [dbo].[Temp_Employee]
+@JobTitle nvarchar(50) -- parameter !!!
+AS
+WHERE JobTittle = @JobTitle -- parameter !!!
+
+EXEC Temp_Employee @JobTitle = 'Salesman' -- must MODIFY Store Procedure
