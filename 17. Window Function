@@ -26,4 +26,41 @@ FROM (Query) x
 WHERE x.rownumber < 3
 
 
-abc
+-- ROW_NUMBER and RANK are similar.
+-- ROW_NUMBER numbers all rows sequentially (for example 1, 2, 3, 4, 5).
+-- RANK provides the same numeric value for ties (for example 1, 2, 2, 4, 5) and skip values.
+-- DENSE_RANK() doesnt skip values.
+
+SELECT *,
+RANK() OVER (PARTITION BY dept_name ORDER BY salary)
+FROM employee
+
+
+-- NTILE
+
+
+-- You can use LAG or LEAD to create columns that pull values from other rows.
+-- All you need to do is enter which column to pull from and how many rows away you'd like to do the pull.
+-- LAG pulls from previous rows and LEAD pulls from following rows:
+
+SELECT *,
+LAG(salary, a, b) OVER (PARTITION BY dept_name ORDER BY emp_id)
+-- a = how many rows away to do the pull, default = 1
+-- b = value if theres nothing to pull from, default = NULL
+FROM employee
+
+
+-- Defining a window alias
+
+SELECT start_terminal,
+       duration_seconds,
+       NTILE(4) OVER ntile_window AS quartile,
+       NTILE(5) OVER ntile_window AS quintile,
+       NTILE(100) OVER ntile_window AS percentile
+  FROM tutorial.dc_bikeshare_q1_2012
+ WHERE start_time < '2012-01-08'
+WINDOW ntile_window AS
+         (PARTITION BY start_terminal ORDER BY duration_seconds)
+ ORDER BY start_terminal, duration_seconds
+ 
+ -- The WINDOW clause, if included, should always come after the WHERE clause.
