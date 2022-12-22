@@ -14,7 +14,7 @@ FROM employee
 
 
 -- PARTITION BY is Optional
--- ORDER BY is Mandatory
+-- ORDER BY is Mandatory only in ROW/RANGE
 ROW_NUMBER ( ) OVER ( [ PARTITION BY value_expression , ... [ n ] ] ORDER BY ...)
 
 SELECT *,
