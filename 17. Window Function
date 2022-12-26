@@ -29,7 +29,7 @@ WHERE x.rownumber < 3
 -- ROW_NUMBER and RANK are similar.
 -- ROW_NUMBER numbers all rows sequentially (for example 1, 2, 3, 4, 5).
 -- RANK provides the same numeric value for ties (for example 1, 2, 2, 4, 5) and skip values.
--- DENSE_RANK() doesnt skip values.
+-- DENSE_RANK() provides the same numeric value for ties (for example 1, 2, 2, 3, 4) doesnt skip values.
 
 SELECT *,
 RANK() OVER (PARTITION BY dept_name ORDER BY salary)
