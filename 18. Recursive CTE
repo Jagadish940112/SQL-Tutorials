@@ -1,0 +1,35 @@
+1) References itself
+2) Return result subset them repeatedly (recursively) references itself
+3) Stops when it returns all the results
+
+WITH RECURSIVE cte_name AS (
+     cte_query_definition (the anchor member/base/non-repetitive)
+     
+     UNION/UNION ALL
+     
+     cte_query_definition (the recursive member/repetitive)
+)
+
+SELECT *
+FROM cte_name;
+
+In the first step a non-recursive term is evaluated.
+Next, for every result row of the previous evaluation, a recursive term is evaluated and its results are APPENDED to the previous ones.
+The recursive term has access to results of the previously evaluated term.
+
+Example; Multiplication by 2
+
+WITH RECURSIVE x2 (result) AS ( -- result is column name
+     SELECT 1 -- non-repetitive
+     UNION ALL
+     SELECT result*2 FROM x2) -- repetitive
+SELECT * FROM x2 LIMIT 10;
+
+Answer; result | 1, 2, 4, 8, 16, 32, 64, 128, 256, 512
+
+In the first step, the only result row is "1."
+Then, there is UNION ALL with a recursive term.
+1 is multiplied by 2, which results in one result row – "2".
+For now, there are two result rows: 1, 2.
+However, the last term evaluation produced only one row – "2" – and it will be passed to the next recursive step.
+2 is multiplied by 2, which returns "4," and so on... In this example, recursion would be infinite if we didn't specify the LIMIT clause.
