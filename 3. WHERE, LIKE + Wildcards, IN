@@ -22,6 +22,8 @@ WHERE Age <= 32 AND Gender = 'Male' -- AND combined multiple conditions, OR eith
 SELECT *
 FROM EmployeeDemographics
 WHERE LastName LIKE 'S%' -- where LastName starts with a S, refer LIKE & Wildcards for more
+
+WHERE CustomerName LIKE '%or%' -- "or" in any position
 -------------------------------------------------------------------------------------------
 SELECT *
 FROM tutorial.billboard_top_100_year_end
@@ -42,6 +44,10 @@ SELECT *
 FROM EmployeeDemographics
 WHERE FirstName is NULL -- FirstName is empty/no values
 
+SQL IN Operator
+Allows you to specify multiple values in a WHERE clause. ACT as multiple OR conditions
+
+Selects all customers that are located in "Germany", "France", or "UK"
 SELECT *
-FROM EmployeeDemographics
-WHERE FirstName IN ('Jim','Michael') -- IN behave like multiple equal statements
+FROM Customers
+WHERE Country IN ('Germany','France','UK')
