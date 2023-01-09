@@ -1,0 +1,110 @@
+Part 18: How to write SQL Query to Find all those wines which contain specific aromas.
+
+Find all wineries which produce wines that possess aromas of plum, cherry, rose, or hazelnut.
+
+We are asked to Find all wineries which produce wines possessing aromas of plum, cherry, rose, or hazelnut.
+The description field in the table contains the details of the aromas of wine, therefore, we have to search in the description field for the specified aromas in question.
+We have to select only those winery names where the description field contains any of the following aromas: plum, cherry, rose, or hazelnut.
+
+Problem with LIKE and SIMILAR TO Operators:
+
+This question seems straightforward.
+If you are familiar with some basic SQL concepts then you would think that it can be solved using LIKE or SIMILAR TO operators.
+The following query returns the winery ‘CarpenÌ¬ Malvolti’ also because the description field ‘Prosecco’ contains ‘rose’ as a substring.
+The % sign round %rose% searches for those records where the rose is prefixed or suffixed by any number of characters or white spaces, therefore, 
+matches with ‘Prosecco’ in the winery’s description field CarpenÌ¬ Malvolti’ and returns it.
+
+SELECT DISTINCT winery
+FROM winemag_p1
+WHERE LOWER(description) LIKE '%plum%'
+   or LOWER(description) LIKE '%cherry%'
+   or LOWER(description) LIKE '%rose%'
+   or LOWER(description) LIKE '%hazelnut%'
+ORDER BY winery
+
+The SIMILAR TO operator also does not provide the correct result and returns the winery ‘CarpenÌ¬ Malvolti’ because its description field contains ‘Prosecco’.
+
+SELECT DISTINCT winery
+FROM winemag_p1
+WHERE LOWER(description) SIMILAR TO '(%plum%|%cherry%|%rose%|%hazelnut%)'
+
+The problem arises when the aromas are matched with partial words like the rose is matched with prosecco.
+This problem can be solved using an exact whole word match which can be done by creating word boundaries around the wanted aromas.
+
+What is word boundary?
+
+The word boundary matches positions in which one side is a word character (typically a letter, digit, or underscore 
+and the other side is not a word character (for instance, it may be the punctuation mark or a space character).
+Word boundaries are useful when you want to match a sequence of letters (or digits) on their own, 
+or when you want to ensure that they appear at the start or end of a sequence of characters.
+
+MySQL Solution:
+
+The word boundary in MySQL for regex can be formed using metacharacter \\b.
+The regex \\brose\\b would thus match the rose in a red rose, but not in prose, prosecco, or rosette.
+When one of the boundaries is removed, \\brose will match rose in rosette and rose\\b will match rose in prose, but not vice versa.
+However, \\brose\\b will not match the rose in _roset or rose21 because there is no boundary between an underscore and a letter, or between a letter and a digit:
+These are all part of what regex defines as word characters.
+
+It is given in the question that aromas are present in singular form therefore we don’t need to check for plural forms of aromas.
+Therefore, We can write the query to match any plum, cherry, rose, or hazelnut aromas using word boundary in MySQL:
+
+SELECT DISTINCT winery
+FROM winemag_p1
+WHERE LOWER(description) REGEXP '\\b(plum|rose|cherry|hazelnut)\\b'
+ORDER BY winery
+
+Another way to create a custom word boundary:
+
+We can create custom word boundaries by restricting the pattern in such a way that it should not be led and followed by any alphabet character.
+We can specify this condition using regex (^a-z) at begin and end of the pattern to match exactly the specified pattern as a whole word:
+
+SELECT DISTINCT winery
+FROM winemag_p1
+WHERE LOWER(description) REGEXP '([^a-z])(plum|rose|cherry|hazelnut)([^a-z])'
+ORDER BY winery
+
+Postgres Solution:
+
+In Postgres, there are two ways to solve the question.
+The first approach is to solve the question using regular expression and another approach is to use the Postgres-specific data types tsvector and tsquery.
+Both approaches are discussed in detail below:
+
+Approach 1: Using POSIX regular expression:
+
+POSIX regular expressions are more powerful than LIKE, SIMILAR TO, and ILIKE.
+We can use POSIX regular expressions an exact pattern match.
+Constraint Escapes \y can be used to create a word boundary around the pattern to match the word either at the start or end of the word in Postgres.
+Using the constraint escape \y, the following query will not return those records for which the partial word is matched.
+We can use the tilde sign ~ to match any one of the following aromas using regular expressions: plum, cherry, rose, or hazelnut.
+We can write the following query to get the winery name:
+
+SELECT DISTINCT winery
+FROM winemag_p1
+WHERE LOWER(description) ~ '\y(plum|cherry|rose|hazelnut)\y'
+
+Another way to create a custom word boundary:
+
+Here is another way to create a custom word boundary same as MySQL,
+if we can restrict the pattern in such a way that it should not be led and followed by any alphabet character.
+We can specify this condition using regex (^a-z) at begin and end of the pattern to match exactly the specified pattern as a whole word:
+
+SELECT DISTINCT winery
+FROM winemag_p1
+WHERE LOWER(description) ~ '([^a-z])(plum|rose|cherry|hazelnut)([^a-z])'
+
+Conclusion:
+
+In this post, we’ve seen a variety of approaches for several data extraction tools to resolve the same query.
+Since the LIKE, ILIKE, and SIMILAR TO operators all have issues, we cannot use them to produce the desired results.
+Therefore, to obtain the desired result, we have employed regular expressions.
+
+Key Takeaways:
+
+1. Regular expressions are more powerful than the LIKE, ILIKE, and SIMILAR TO operators for pattern matching.
+2. Whole word match can be performed using word boundary metacharacter in regular expressions in MySQL, and Postgres.
+3. The Postgres functions to_tsvector() and to_tsquery() make pattern search more robust and faster than regular expression,
+as they search for multiple variants of a pattern in a single query.
+
+A regular expression is a powerful tool that can be used in SQL functions to extract and match field patterns.
+It is strong data extraction, cleaning, and validation tool, especially when working with text data.
