@@ -1,0 +1,13 @@
+In SQL, '::' is a typecast operator that allows you to explicitly convert a value of one data type to another data type.
+The syntax of the typecast operator is as follows:
+
+value::data_type
+
+For example, if you want to convert a string to an integer, you can use the '::' operator as follows:
+
+SELECT '123'::integer;
+
+This will convert the string '123' to an integer value of 123.
+
+The '::' operator is supported by many relational database management systems, including PostgreSQL, Oracle, and SQL Server.
+However, note that the syntax and behavior of the typecast operator may vary slightly depending on the database system you are using.
