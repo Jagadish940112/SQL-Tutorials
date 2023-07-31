@@ -1,0 +1,36 @@
+1. SELECT SUM(REVENUE) OVER () FROM kaggle.data GROUP BY channel;
+
+The issue with this query is that it combines a window function (SUM(REVENUE) OVER ()) with a GROUP BY clause.
+The GROUP BY clause is used to perform aggregate calculations (like SUM, COUNT, etc.) within each group separately.
+In this case, you are trying to use a window function without any PARTITION BY clause, which means that it would be applied to the entire result set as one group. 
+This results in ambiguity, as the window function tries to sum up all the groups' sums, but it cannot determine which grouping the sums belong to.
+
+| channel | revenue |
+|---------|---------|
+| A       | 100     |
+| A       | 200     |
+| B       | 300     |
+| B       | 400     |
+
+With the GROUP BY channel clause, you'd get two groups:
+
+Group 1 (channel = A): 100 + 200 = 300
+Group 2 (channel = B): 300 + 400 = 700
+
+But if you apply a window function without PARTITION BY like SUM(REVENUE) OVER (), the window function tries to sum up all the groups' sums:
+
+Window Function Result: 300 + 700 = 1000
+
+The issue here is that the window function does not know how to separate the sums of each group because there is no PARTITION BY clause.
+As a result, the query is not valid in standard SQL.
+
+2. SELECT SUM(SUM(REVENUE)) OVER () FROM kaggle.data GROUP BY channel;
+
+In this query, you are using a nested SUM function inside the window function.
+The inner SUM(REVENUE) calculates the sum of the REVENUE column within each channel group separately due to the GROUP BY channel clause.
+Then, the outer SUM function (window function) applies to the result of the inner SUM(REVENUE) calculation for all groups defined by the GROUP BY clause.
+This is allowed because the GROUP BY clause ensures that each group's sum is well-defined and unambiguous.
+
+To summarize, the key difference is that the second query is allowed because the inner SUM calculation is done within each group due to the GROUP BY clause,
+while the first query is not allowed because the window function is used without a PARTITION BY clause,
+causing ambiguity in the grouping for the window function's calculation.
